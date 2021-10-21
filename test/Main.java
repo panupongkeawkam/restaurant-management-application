@@ -9,18 +9,19 @@ import org.apache.poi.hssf.usermodel.*;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
-        File file = new File("test-database2.xls");
-        FileInputStream fis = new FileInputStream(file);
-        HSSFWorkbook wb = new HSSFWorkbook(fis);
-
-        int lastRow = wb.getSheet("Sheet0").getLastRowNum();
-        int lastCell = wb.getSheet("Sheet0").getRow(lastRow).getLastCellNum();
-        String x = wb.getSheet("Sheet0").getRow(lastRow).getCell(0).getStringCellValue();
-        System.out.println(x);
-        DateTimeFormatter day = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm:ss");
-        System.out.println(day.format(LocalDateTime.now()));
+    public static void main(String[] args) {
+        new MainFrame();
+//        File file = new File("test-database2.xls");
+//        FileInputStream fis = new FileInputStream(file);
+//        HSSFWorkbook wb = new HSSFWorkbook(fis);
+//
+//        int lastRow = wb.getSheet("Sheet0").getLastRowNum();
+//        int lastCell = wb.getSheet("Sheet0").getRow(lastRow).getLastCellNum();
+//        String x = wb.getSheet("Sheet0").getRow(lastRow).getCell(0).getStringCellValue();
+//        System.out.println(x);
+//        DateTimeFormatter day = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//        DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm:ss");
+//        System.out.println(day.format(LocalDateTime.now()));
         
 //        wb.createSheet(day.format(LocalDateTime.now()));
 //        wb.write(file);
@@ -31,7 +32,7 @@ public class Main {
 //        wb.getSheet("18-10-2021").createRow(10).createCell(10).setCellValue("Yes");
         
         
-        wb.write(file);
+//        wb.write(file);
 
 //        HSSFWorkbook wb = new HSSFWorkbook();
 //        HSSFSheet sh = wb.createSheet();

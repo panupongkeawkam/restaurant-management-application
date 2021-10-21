@@ -6,24 +6,31 @@ import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.poi.hssf.usermodel.*;
+import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.*;
 
-public class Main {
+import org.apache.poi.xssf.usermodel.*;
+
+public class Main2 {
 
     public static void main(String[] args) throws Exception {
         databaseInitialize();
     }
 
     public static boolean databaseInitialize() throws Exception {
-        if (new File("database.xls").exists()) {
+
+        if (new File("database.xlsx").exists()) {
             System.out.println("File exists!");
             return false;
         }
 
-        File databaseExcel = new File("database.xls");
+        File databaseExcel = new File("database.xlsx");
 
         FileOutputStream fos = new FileOutputStream(databaseExcel);
-        HSSFWorkbook workbook = new HSSFWorkbook(); // create file writer
+        XSSFWorkbook workbook = new XSSFWorkbook(); // create file writer
+
+        JButton b = new JButton("yes");
 
         // test for create sheet and value in sheet
         workbook.createSheet("S1");
@@ -39,6 +46,8 @@ public class Main {
         workbook.close();
 
         System.out.println("File create success!");
+
+//        Desktop.getDesktop().open(new File("database.xlsx")); {
 
         return true;
     }
