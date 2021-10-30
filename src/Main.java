@@ -12,13 +12,21 @@ import java.awt.*;
 
 import org.apache.poi.xssf.usermodel.*;
 
-public class Main2 {
+public class Main {
 
     public static void main(String[] args) throws Exception {
-        databaseInitialize();
+        new LogAPI();
+        new TableFrame();
+        new TableManagerFrame();
+        new LoginFrame();
+        new AdminFrame();
+        new MenuAPI();
+        new EditMenu();
+        new MainFrame();
+//        databaseInitialize();
     }
 
-    public static boolean databaseInitialize() throws Exception {
+    public static boolean databaseInitialize() throws Exception { // not use in this class
 
         if (new File("database.xlsx").exists()) {
             System.out.println("File exists!");
@@ -48,7 +56,6 @@ public class Main2 {
         System.out.println("File create success!");
 
 //        Desktop.getDesktop().open(new File("database.xlsx")); {
-
         return true;
     }
 }
