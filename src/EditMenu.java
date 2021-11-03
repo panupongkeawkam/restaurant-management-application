@@ -5,7 +5,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 class EditMenu implements ActionListener {
-    
+
     private static JFrame frame;
     private JPanel container;
     private static JTable table, table2;
@@ -18,25 +18,25 @@ class EditMenu implements ActionListener {
     private int rowCount;
     private JButton addBtn;
     private JButton button[];
-    
+
     public EditMenu() {
         frame = new JFrame("Manage Menu");
         frame.setBounds(735, 240, 450, 600);
-        
+
         container = new JPanel();
         container.setLayout(new BorderLayout());
-        
+
         table = new JTable();
         this.tableUpdate(); // update ข้อมูลในตาราง
 
         scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        
+
         columns2 = new String[]{"Id", "Name", "Price", "Action"};
         data2 = new String[][]{
             {"", "", ""}
         };
-        
+
         DefaultTableModel model2 = new DefaultTableModel(data2, columns2);
         table2 = new JTable();
         table2.setModel(model2);
@@ -52,20 +52,21 @@ class EditMenu implements ActionListener {
         testP.add(table2);
         container.add(scrollPane, BorderLayout.CENTER);
         container.add(testP, BorderLayout.SOUTH);
-        
+
         addBtn = new JButton();
         addBtn.addActionListener(this);
-        
+
         frame.add(container);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(false);
     }
-    
+
     public void tableUpdate() {
         columns = new String[]{"Id", "Name", "Price", "Action"};
         data = MenuAPI.getMenu();
         model = new DefaultTableModel(data, columns);
         table.setModel(model);
+        table.getTableHeader().setReorderingAllowed(false);
         rowCount = table.getRowCount();
         button = new JButton[rowCount];
         for (int i = 0; i < rowCount; i++) {
@@ -79,34 +80,47 @@ class EditMenu implements ActionListener {
         action.setCellRenderer(new ButtonRenderer());
         action.setCellEditor(new ButtonEditor(new JCheckBox()));
     }
-    
+
     public static JFrame getFrame() {
         return frame;
     }
-    
+
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource().equals(addBtn)) {
-            String menuName = (String) table2.getValueAt(0, 1);
-            Double menuPrice = Double.parseDouble((String) table2.getValueAt(0, 2));
-            new MenuAPI().writeDataInExcel(menuName, menuPrice);
-            this.tableUpdate();
+            try {
+                String menuName = ((String) table2.getValueAt(0, 1)).trim();
+                Double menuPrice = Double.parseDouble((String) table2.getValueAt(0, 2));
+                if (menuPrice <= 0 || menuName.equals("")) {
+                    table2.setValueAt(null, 0, 2); // รีช่อง add menu
+                    JOptionPane.showMessageDialog(null, "Please enter valid value", "Warning", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    new MenuAPI().writeDataInExcel(menuName, menuPrice);
+                    this.tableUpdate();
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Please enter valid value", "Warning", JOptionPane.ERROR_MESSAGE);
+            }
             table2.setValueAt(null, 0, 1); // รีช่อง add menu
             table2.setValueAt(null, 0, 2); // รีช่อง add menu
         }
         for (int i = 0; i < rowCount; i++) {
             if (evt.getSource().equals(button[i])) {
-                String value = (String) table.getValueAt(i, 2);
-                JOptionPane.showMessageDialog(null, "price: " + value);
+                String menuName = (String) table.getValueAt(i, 1);
+                int reply = JOptionPane.showConfirmDialog(null, "Do you sure to delete" + menuName, "Warning", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    new MenuAPI().deleteMenuInExcel(i);
+                    this.tableUpdate();
+                }
             }
         }
     }
-    
+
     class ButtonRenderer extends JButton implements TableCellRenderer {
-        
+
         public ButtonRenderer() {
             setOpaque(true);
         }
-        
+
         public Component getTableCellRendererComponent(JTable table, Object value,
                 boolean isSelected, boolean hasFocus, int row, int column) {
 //            setText((value == null) ? "-" : value.toString());
@@ -119,15 +133,15 @@ class EditMenu implements ActionListener {
             return this;
         }
     }
-    
+
     class ButtonEditor extends DefaultCellEditor {
-        
+
         private String label;
-        
+
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
         }
-        
+
         public Component getTableCellEditorComponent(JTable table, Object value,
                 boolean isSelected, int row, int column) {
 //            label = (value == null) ? "Modify" : value.toString();
@@ -145,7 +159,7 @@ class EditMenu implements ActionListener {
             }
             return jp;
         }
-        
+
         public Object getCellEditorValue() {
             return new String(label);
         }

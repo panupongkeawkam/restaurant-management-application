@@ -18,6 +18,7 @@ public class Main {
         new LogAPI();
         new TableFrame();
         new TableManagerFrame();
+        new ChangePINFrame();
         new LoginFrame();
         new AdminFrame();
         new MenuAPI();

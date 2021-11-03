@@ -74,6 +74,7 @@ public class AdminFrame implements ActionListener {
         row2.setLayout(new GridLayout(1, 1));
         table.setCellSelectionEnabled(false);
         table.setRowHeight(48);
+        table.getTableHeader().setReorderingAllowed(false);
 //        table.getColumn("EXCEL").setMaxWidth(100);
         table.getColumn("EXCEL").setCellRenderer(new ButtonRenderer());
         table.getColumn("EXCEL").setCellEditor(new ButtonEditor(new JCheckBox()));
@@ -112,7 +113,7 @@ public class AdminFrame implements ActionListener {
             EditMenu.getFrame().setVisible(true);
 //            JOptionPane.showMessageDialog(null, "clicked menu manager");
         } else if (event.equals(changePIN)) {
-            JOptionPane.showMessageDialog(null, "clicked change PIN");
+            ChangePINFrame.getFrame().setVisible(true);
         } else if (event.equals(logout)) {
             this.container.setVisible(false);
             TableFrame.getContainer().setVisible(true);

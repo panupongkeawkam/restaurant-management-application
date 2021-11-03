@@ -52,6 +52,28 @@ public class MenuAPI implements DataAPI {
         }
     }
 
+    public void deleteMenuInExcel(int row) {
+        File menuExcel = new File("menu.xlsx");
+        try (FileInputStream fis = new FileInputStream(menuExcel)) {
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            XSSFSheet sheet = workbook.getSheet("menu");
+            XSSFRow rowSelect = sheet.getRow(row);
+
+            int lastRow = sheet.getLastRowNum();
+            sheet.removeRow(rowSelect);
+            if (lastRow != row) {
+                sheet.shiftRows(row + 1, lastRow, -1);
+            }
+
+            FileOutputStream fos = new FileOutputStream(menuExcel);
+            workbook.write(fos);
+            workbook.close();
+            this.readDataFromExcel();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
     public static String[][] getMenu() {
         return menu;
     }
