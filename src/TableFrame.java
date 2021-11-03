@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -11,7 +10,6 @@ public class TableFrame implements ActionListener {
     private static JPanel container;
     private JPanel panelTable, panelText, panelTextLeft;
     private JButton btn[], admin;
-//    private TableBacken x[];
     private MainFrame mf;
     private JLabel text1, text2;
 
@@ -24,7 +22,6 @@ public class TableFrame implements ActionListener {
         panelTextLeft = new JPanel();
         panelText = new JPanel();
         btn = new JButton[24];
-//        x = new TableBacken[24];
         admin = new JButton("Admin");
         admin.addActionListener(this);
 
@@ -32,18 +29,18 @@ public class TableFrame implements ActionListener {
         container.setLayout(new BorderLayout());
         container.setSize(960, 720);
         container.setAutoscrolls(true);
-        panelTable.setLayout(new GridLayout(6, 4));
+        panelTable.setLayout(new GridLayout(6, 4, 6, 6));
         panelText.setLayout(new FlowLayout());
         panelTextLeft.setLayout(new BorderLayout());
 
         for (int i = 0; i < 24; i++) {
             btn[i] = new JButton("Table " + (i + 1));
-//            x[i] = new TableBacken("Table " + (i + 1));
             btn[i].addActionListener(this);
             btn[i].setSize(300, 200);
             panelTable.add(btn[i]);
         }
         container.add(panelTable, BorderLayout.NORTH);
+        panelTextLeft.setBorder(BorderFactory.createEmptyBorder(300, 0, 0, 160));
         panelTextLeft.add(text1, BorderLayout.WEST);
         panelTextLeft.add(text2, BorderLayout.CENTER);
         panelTextLeft.add(admin, BorderLayout.EAST);
