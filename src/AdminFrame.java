@@ -20,12 +20,6 @@ public class AdminFrame implements ActionListener {
 
     public AdminFrame() {
         data = LogAPI.getLog();
-//        data = new String[][]{
-//            {"1", "20-10-2564", "56772.20", "58"},
-//            {"2", "21-10-2564", "48644.5", "42"},
-//            {"3", "22-10-2564", "74253.2", "37"},
-//            {"4", "23-10-2564", "45657", "51"}
-//        };
         column = new String[]{"ID", "DATE", "SUMMARY", "TABLE SERVICED", "EXCEL"};
 
 //        f = new JFrame();
@@ -55,8 +49,8 @@ public class AdminFrame implements ActionListener {
         btnDivider1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
 
         menuManager.setText("Manage Menu");
-        btnDivider2.setLayout(new GridLayout(1, 1));
         menuManager.addActionListener(this);
+        btnDivider2.setLayout(new GridLayout(1, 1));
         btnDivider2.add(menuManager);
         btnDivider2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 

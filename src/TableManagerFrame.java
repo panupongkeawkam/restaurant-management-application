@@ -1,13 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author Vector
- */
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -120,7 +111,7 @@ public class TableManagerFrame implements ActionListener {
         p3.add(billTxt);
 
         //Add to Main Panel
-        container.setSize(960, 720);
+        container.setSize(960, 640);
         container.add(p2, BorderLayout.NORTH);
         container.add(p3, BorderLayout.CENTER);
         container.add(p6, BorderLayout.SOUTH);
@@ -134,7 +125,7 @@ public class TableManagerFrame implements ActionListener {
     public static JPanel getContainer() {
         return container;
     }
-    
+
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource().equals(backBtn)) {
             this.container.setVisible(false);
