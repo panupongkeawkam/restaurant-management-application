@@ -1,1 +1,0 @@
-# Restaurant Management Application
