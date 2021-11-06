@@ -84,9 +84,11 @@ public class ChangePINFrame implements ActionListener {
                 if (oldPIN.equals(newPIN)) {
                     JOptionPane.showMessageDialog(null, "Please enter valid value", "Warning", JOptionPane.ERROR_MESSAGE);
                 } else if (oldPIN.equals(PIN) && newPIN.length() == 6) {
-                    Integer numPIN = Integer.parseInt(newPIN);
-                    JOptionPane.showMessageDialog(null, "yessssssssssss");
+                    Integer.parseInt(newPIN);
+                    JOptionPane.showMessageDialog(null, "changed!");
                     PIN = newPIN;
+                    System.out.println("PIN: " + PIN);
+                    frame.setVisible(false);
                     this.save();
                 } else {
                     JOptionPane.showMessageDialog(null, "Please enter valid value", "Warning", JOptionPane.ERROR_MESSAGE);

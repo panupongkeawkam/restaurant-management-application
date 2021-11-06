@@ -15,8 +15,8 @@ public class MainFrame {
         frame.add(TableFrame.getContainer());
         frame.add(TableManagerFrame.getContainer());
         frame.add(AdminFrame.getContainer());
-//        frame.add(EditMenu.getContainer());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
+
 }

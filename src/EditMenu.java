@@ -63,7 +63,15 @@ class EditMenu implements ActionListener {
 
     public void tableUpdate() {
         columns = new String[]{"Id", "Name", "Price", "Action"};
-        data = MenuAPI.getMenu();
+        Object dataTemp[][] = MenuAPI.getMenu();
+
+        data = new String[dataTemp.length][3];
+        for (int i = 0; i < dataTemp.length; i++) {
+            data[i][0] = String.valueOf(i + 1);
+            data[i][1] = (String) dataTemp[i][0];
+            data[i][2] = (String) dataTemp[i][1];
+        }
+
         model = new DefaultTableModel(data, columns);
         table.setModel(model);
         table.getTableHeader().setReorderingAllowed(false);

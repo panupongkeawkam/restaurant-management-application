@@ -12,8 +12,8 @@ public class LoginFrame implements ActionListener {
     private JLabel label;
     private JTextField textField;
     private JButton numBtn[];
-    String password;
-    String passwordInput = "";
+    String PIN;
+    String PINInput = "";
 
     public LoginFrame() {
         frame = new JFrame("Login");
@@ -23,7 +23,7 @@ public class LoginFrame implements ActionListener {
         label = new JLabel("PIN");
         textField = new JTextField();
         numBtn = new JButton[12];
-        password = ChangePINFrame.getPIN().trim();
+        PIN = ChangePINFrame.getPIN().trim();
 
         topPanel.setLayout(new GridLayout(2, 1, 5, 5));
         topPanel.add(label);
@@ -47,11 +47,11 @@ public class LoginFrame implements ActionListener {
         container.add(topPanel, BorderLayout.NORTH);
         container.add(numPad, BorderLayout.CENTER);
 
-        frame.setBounds(860, 440, 200, 300);
+        frame.setBounds(860, 390, 200, 300);
         frame.add(container);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(false);
-        System.out.println(password);
+        System.out.println("PIN : " + PIN);
     }
 
     public static JFrame getFrame() {
@@ -59,28 +59,29 @@ public class LoginFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent evt) {
+        PIN = ChangePINFrame.getPIN().trim();
         for (int i = 0; i < 12; i++) {
             if (evt.getSource().equals(numBtn[i])) {
                 String num = numBtn[i].getText();
                 if (num.equals("C")) {
                     textField.setText("");
-                    passwordInput = "";
+                    PINInput = "";
                     break;
                 }
-                passwordInput += num;
+                PINInput += num;
                 textField.setText(textField.getText() + "*");
             }
         }
-        if (passwordInput.length() == 6 && passwordInput.equals(password)) {
-            this.frame.setVisible(false);
-            AdminFrame.getContainer().setVisible(true);
+        if (PINInput.length() == 6 && PINInput.equals(PIN)) {
+            frame.setVisible(false);
             TableFrame.getContainer().setVisible(false);
+            AdminFrame.getContainer().setVisible(true);
             textField.setText("");
-            passwordInput = "";
-        } else if (passwordInput.length() == 6) {
+            PINInput = "";
+        } else if (PINInput.length() == 6) {
             JOptionPane.showMessageDialog(null, "Access Denined!");
             textField.setText("");
-            passwordInput = "";
+            PINInput = "";
         }
     }
 }

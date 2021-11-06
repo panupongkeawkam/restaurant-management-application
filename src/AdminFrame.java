@@ -3,14 +3,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import java.io.*;
 
 public class AdminFrame implements ActionListener {
 
 //    static JFrame f;
     private static JPanel container;
     private JPanel row1, row2;
-    private JPanel btnDivider1, btnDivider2, btnDivider3;
-    private JButton openAndClose, menuManager, changePIN, logout;
+    private JPanel p1, p2, p3;
+    private JButton openCloseBtn, menuManagerBtn, changePINBtn, logoutBtn;
     private JButton showDetail[];
     private String data[][];
     private String column[];
@@ -26,13 +27,13 @@ public class AdminFrame implements ActionListener {
         container = new JPanel();
         row1 = new JPanel();
         row2 = new JPanel();
-        btnDivider1 = new JPanel();
-        btnDivider2 = new JPanel();
-        btnDivider3 = new JPanel();
-        openAndClose = new JButton();
-        menuManager = new JButton();
-        changePIN = new JButton();
-        logout = new JButton();
+        p1 = new JPanel();
+        p2 = new JPanel();
+        p3 = new JPanel();
+        openCloseBtn = new JButton();
+        menuManagerBtn = new JButton();
+        changePINBtn = new JButton();
+        logoutBtn = new JButton();
         DefaultTableModel model = new DefaultTableModel(data, column);
         table = new JTable(model);
         rowCount = table.getRowCount();
@@ -42,33 +43,33 @@ public class AdminFrame implements ActionListener {
             showDetail[i].addActionListener(this);
         }
 
-        openAndClose.setText("Close");
-        btnDivider1.setLayout(new GridLayout(1, 1));
-        openAndClose.addActionListener(this);
-        btnDivider1.add(openAndClose);
-        btnDivider1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
+        openCloseBtn.setText("Close");
+        p1.setLayout(new GridLayout(1, 1));
+        openCloseBtn.addActionListener(this);
+        p1.add(openCloseBtn);
+        p1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
 
-        menuManager.setText("Manage Menu");
-        menuManager.addActionListener(this);
-        btnDivider2.setLayout(new GridLayout(1, 1));
-        btnDivider2.add(menuManager);
-        btnDivider2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        menuManagerBtn.setText("Manage Menu");
+        menuManagerBtn.addActionListener(this);
+        p2.setLayout(new GridLayout(1, 1));
+        p2.add(menuManagerBtn);
+        p2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        changePIN.addActionListener(this);
-        changePIN.setText("Change PIN");
-        logout.addActionListener(this);
-        logout.setText("Logout");
+        changePINBtn.addActionListener(this);
+        changePINBtn.setText("Change PIN");
+        logoutBtn.addActionListener(this);
+        logoutBtn.setText("LogoutBtn");
 
-        btnDivider3.setLayout(new GridLayout(2, 1));
-        btnDivider3.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 10));
-        btnDivider3.add(changePIN);
-        btnDivider3.add(logout);
+        p3.setLayout(new GridLayout(2, 1));
+        p3.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 10));
+        p3.add(changePINBtn);
+        p3.add(logoutBtn);
 
         row1.setBounds(0, 0, 960, 240);
         row1.setLayout(new GridLayout(1, 3));
-        row1.add(btnDivider1);
-        row1.add(btnDivider2);
-        row1.add(btnDivider3);
+        row1.add(p1);
+        row1.add(p2);
+        row1.add(p3);
 
         row2.setBounds(0, 240, 960, 480);
         row2.setLayout(new GridLayout(1, 1));
@@ -106,20 +107,55 @@ public class AdminFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "clicked row " + i + "\n" + table.getValueAt(i, 1));
             }
         }
-        if (event.equals(openAndClose)) {
-            JOptionPane.showMessageDialog(null, "clicked close btn");
-        } else if (event.equals(menuManager)) {
-//            this.container.setVisible(false);
-            EditMenu.getFrame().setVisible(true);
-//            JOptionPane.showMessageDialog(null, "clicked menu manager");
-        } else if (event.equals(changePIN)) {
+        if (event.equals(openCloseBtn)) {
+            if (isOpen() && TableFrame.getTableBusyCount() == 0) {
+                setStatus('f');
+                JOptionPane.showMessageDialog(null, "ปิดร้านล๊าา");
+            } else if (isOpen() && TableFrame.getTableBusyCount() > 0) {
+                JOptionPane.showMessageDialog(null, "เคลียร์โต๊ะก่อนค่อยปิดร้าน ไอสัส!");
+            } else if (!isOpen()) {
+                setStatus('t');
+                TableInformation.tableInitial();
+                JOptionPane.showMessageDialog(null, "เปิดร้านแล้วโว้ยยย");
+            }
+            TableFrame.setRestaurantStatus();
+        } else if (event.equals(menuManagerBtn)) {
+            if (isOpen()) {
+                JOptionPane.showMessageDialog(null, "ปิดร้านก่อนค่อยแก้น้อง เดี๋ยวร้านระเบิด");
+            } else {
+                EditMenu.getFrame().setVisible(true);
+            }
+        } else if (event.equals(changePINBtn)) {
             ChangePINFrame.getFrame().setVisible(true);
-        } else if (event.equals(logout)) {
-            this.container.setVisible(false);
+        } else if (event.equals(logoutBtn)) {
+            container.setVisible(false);
             TableFrame.getContainer().setVisible(true);
-//            EditMenu.getTopPanel().setVisible(true);
-//            JOptionPane.showMessageDialog(null, "clicked logout");
         }
+    }
+
+    public void setStatus(char st) {
+        if (st == 't') {
+            TableInformation.tableInitial();
+        }
+        try (FileOutputStream fos = new FileOutputStream("status.dat")) {
+            fos.write(st);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public static boolean isOpen() {
+        try (FileInputStream fis = new FileInputStream("status.dat")) {
+            int st = fis.read();
+            if (st == 't') {
+                return true;
+            } else if (st == 'f') {
+                return false;
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return false;
     }
 
     class ButtonRenderer extends JButton implements TableCellRenderer {

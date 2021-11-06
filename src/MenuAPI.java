@@ -23,11 +23,10 @@ public class MenuAPI implements DataAPI {
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheet("menu");
             int rowCount = sheet.getLastRowNum() + 1;
-            menu = new String[rowCount][3];
+            menu = new String[rowCount][2]; // edit
             for (int i = 0; i < rowCount; i++) {
-                menu[i][0] = String.valueOf(i + 1);
-                menu[i][1] = sheet.getRow(i).getCell(0).getStringCellValue();
-                menu[i][2] = String.valueOf(sheet.getRow(i).getCell(1).getNumericCellValue());
+                menu[i][0] = sheet.getRow(i).getCell(0).getStringCellValue();
+                menu[i][1] = String.valueOf(sheet.getRow(i).getCell(1).getNumericCellValue());
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
